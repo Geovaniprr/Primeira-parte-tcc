@@ -48,9 +48,6 @@ export default function SenhaSeguranca() {
           <Ionicons name="chatbubble-outline" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="notifications-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
           <Ionicons name="person-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>

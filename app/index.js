@@ -12,6 +12,9 @@ import HomeConfiguracoes from '../src/telas/homeConfiguracoes';
 import InformacoesPessoais from '../src/telas/informacoesPessoais';
 import SenhaSeguranca from '../src/telas/senhaSeguranca';
 import SuporteTecnico from '../src/telas/suporteTecnico';
+import Home from '../src/telas/home';
+import Relatar1 from '../src/telas/relatar_1';
+import Relatar2 from '../src/telas/relatar_2';
 
 export default function index() {
     const [fonteCarregada] = useFonts({
@@ -21,7 +24,7 @@ export default function index() {
 
   return (
     <SafeAreaView>
-      <SuporteTecnico />
+      <Relatar2 />
     </SafeAreaView>
   );
 }

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function SuporteTecnico() {
   const handleEmailPress = () => {
-    Linking.openURL('mailto:support@example.com');
+    Linking.openURL('mailto:entreknos2023@gmail.com');
   };
 
   return (
@@ -39,9 +39,6 @@ export default function SuporteTecnico() {
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="chatbubble-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="notifications-outline" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Ionicons name="person-outline" size={24} color="black" />
@@ -140,4 +137,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
