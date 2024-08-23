@@ -1,50 +1,39 @@
-# Welcome to your Expo app 👋
+Descrição do Commit:
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Implementação das telas e componentes principais do aplicativo CaEntreNos utilizando React Native.
 
-## Get started
+Detalhes do Commit:
 
-1. Install dependencies
+Estrutura do Projeto:
 
-   ```bash
-   npm install
-   ```
+Organização do projeto seguindo uma estrutura de pastas clara, com a separação das telas na pasta telas e componentes reutilizáveis na pasta components.
+Componentes:
 
-2. Start the app
+Texto.js: Componente reutilizável para gerenciar a estilização de textos com as fontes customizadas PoppinsRegular e PoppinsBold.
+Telas Implementadas:
 
-   ```bash
-    npx expo start
-   ```
+Cadastro.js: Tela para o cadastro de usuários, incluindo validação de campos, máscara para senha, e exibição de modal de confirmação.
+EnvioRelato.js: Tela que confirma o envio de um relato, com um botão para retornar à página inicial.
+Home.js: Tela principal que exibe o avatar do usuário, menu de navegação horizontal e uma seção de perguntas frequentes (FAQ) com expansão das respostas.
+HomeConfiguracoes.js: Tela de configurações do perfil do usuário, permitindo o acesso às configurações de informações pessoais, segurança, e suporte técnico.
+InformacoesPessoais.js: Tela para visualização e edição de informações pessoais do usuário, com ícones de edição para cada campo.
+Relatar_1.js e Relatar_2.js: Telas sequenciais para o relato de problemas, com formulários e validações de campos, além de uma opção para tornar o relato público.
+SenhaSeguranca.js: Tela para gerenciar a segurança da conta, com validação de senha e exibição de modal para alteração.
+SuporteTecnico.js: Tela de suporte técnico, com instruções para envio de e-mail e um botão para redirecionar o usuário ao aplicativo de e-mail.
+Dependências e Bibliotecas:
 
-In the output, you'll find options to open the app in a
+React Native: Framework principal utilizado para a criação das interfaces móveis.
+Expo: Utilizado para facilitar o desenvolvimento, incluindo o uso de fontes customizadas e o LinearGradient.
+React Native Vector Icons: Para a inclusão de ícones customizados em diferentes partes do aplicativo.
+React Native Picker: Implementação de dropdowns para seleção de opções nas telas de relato.
+Ferramentas de Estilização:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Uso de StyleSheet para estilização das telas, garantindo consistência visual e facilidade de manutenção.
+Funcionalidades Adicionais:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Validação de senhas com critérios específicos (mínimo de 8 caracteres, inclusão de letra maiúscula e caracteres especiais).
+Implementação de navegação entre telas utilizando botões e ícones.
+Exibição de mensagens e modais de confirmação para uma melhor experiência do usuário.
+Outros Arquivos:
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Configurações de ambiente e dependências foram gerenciadas pelos arquivos package.json, babel.config.js, e app.json.
