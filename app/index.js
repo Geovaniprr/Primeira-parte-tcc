@@ -15,6 +15,7 @@ import SuporteTecnico from '../src/telas/suporteTecnico';
 import Home from '../src/telas/home';
 import Relatar1 from '../src/telas/relatar_1';
 import Relatar2 from '../src/telas/relatar_2';
+import EnvioRelato from '../src/telas/envio_relato';
 
 export default function index() {
     const [fonteCarregada] = useFonts({
@@ -24,7 +25,7 @@ export default function index() {
 
   return (
     <SafeAreaView>
-      <Relatar2 />
+      <EnvioRelato />
     </SafeAreaView>
   );
 }

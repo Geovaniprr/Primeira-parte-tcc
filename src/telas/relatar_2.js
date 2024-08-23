@@ -6,9 +6,9 @@ import { Ionicons } from '@expo/vector-icons';
 export default function Relatar() {
   const [selectedAno, setSelectedAno] = useState('');
   const [selectedTema, setSelectedTema] = useState('');
-  const [nome, setNome] = useState(''); // Estado para o nome
-  const [isPublic, setIsPublic] = useState(false); // Estado para o switch de publicar
-  const [isAgreed, setIsAgreed] = useState(false); // Estado para o switch de concordância
+  const [nome, setNome] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
+  const [isAgreed, setIsAgreed] = useState(false);
 
   return (
     <>

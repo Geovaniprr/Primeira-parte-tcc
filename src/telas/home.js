@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import Texto from '../components/Texto';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons'; // Adicionando a importação correta
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const menuItems = [
   { id: '1', title: 'Relatar', color: '#052880', icon: 'plus-box' },

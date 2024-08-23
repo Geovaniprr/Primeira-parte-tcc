@@ -113,32 +113,6 @@ export default function Relatar() {
           <Ionicons name="person-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(!modalVisible)}
-      >
-        <View style={styles.modalView}>
-          <Texto style={styles.modalTitle}>Alterar Senha</Texto>
-          <TextInput
-            style={styles.input}
-            placeholder="Digite sua nova senha"
-            secureTextEntry
-            onChangeText={setNome}
-          />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              Alert.alert('Senha Alterada com Sucesso!');
-              setModalVisible(false);
-            }}
-          >
-            <Texto style={styles.botaoTexto}>Salvar</Texto>
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </>
   );
 }
@@ -277,25 +251,5 @@ const styles = StyleSheet.create({
   botaoTexto: {
     fontSize: 16,
     color: 'white',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
   },
 });
