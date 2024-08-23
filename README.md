@@ -1,54 +1,54 @@
 **Descrição do Commit:**
 
-**Implemento das telas frontend do APP `CaEntreNos`, que foi desenvolvido afim de melhorar a comuição entre escola e aluno.** 
+**Adicionei as telas e componentes principais do aplicativo `CaEntreNos`, que foi criado para melhorar a comunicação entre alunos, responsáveis e a administração escolar.**
 
 ---
 
 **Detalhes do Commit:**
 
 ### Estrutura do Projeto:
-- Organização do projeto utilizando uma estrutura de pastas clara e modular:
-  - **`components/`:** Contém componentes para serem reutilizados
-  - **`telas/`:** Contém as telas principais da interface do usuario.
+- Organizei o projeto de forma que tudo ficasse bem estruturado e fácil de manter:
+  - **`components/`:** Onde coloquei os componentes reutilizáveis que podem ser usados em várias partes do app.
+  - **`telas/`:** Contém todas as telas principais do aplicativo.
 
 ### Componentes:
-- **Texto.js:** Componente reutilizável que gerencia a estilização de textos usando as fontes personalizadas "PoppinsRegular" e "PoppinsBold" para garantir uma apresentação visual consistente e elegante em todo o aplicativo.
+- **Texto.js:** Criei um componente reutilizável para gerenciar a estilização dos textos, utilizando as fontes customizadas `PoppinsRegular` e `PoppinsBold` para garantir uma aparência consistente e agradável em todo o aplicativo.
 
 ### Telas Implementadas:
-- **Cadastro.js:** Tela para o cadastro de novos usuários com padrões de senha segura e validação de campos obrigatórios. Para melhorar a experiência do usuário, adicione um modal de confirmação e uma máscara para senhas.
-  
-- **EnvioRelato.js:** Tela de confirmação de envio de relatos, agradecendo ao usuário pela confiança e um botão para retornar à página inicial
+- **Cadastro.js:** Desenvolvi a tela de cadastro, que inclui a validação dos campos e a confirmação por modal quando o cadastro é realizado com sucesso.
 
-- **Home.js:** Tela principal, que funciona como centro do aplicativo. Exibe o avatar do usuário e um menu horizontal de navegação com várias funcionalidades. Acrescente também uma seção de Perguntas Frequentes (FAQ), que oferece mais respostas.
+- **EnvioRelato.js:** Tela que confirma o envio do relato, agradecendo ao usuário pela confiança e permitindo que ele retorne à tela inicial.
 
-- **HomeConfiguracoes.js:** A tela de configurações permite que o usuário controle seus dados pessoais, proteja sua conta e obtenha suporte técnico.
+- **Home.js:** Esta é a tela principal do aplicativo, onde coloquei o avatar do usuário, um menu de navegação horizontal, e uma seção de perguntas frequentes (FAQ) com respostas expansíveis.
 
-- **InformacoesPessoais.js:** Tela destinada à visualização e edição de informações pessoais; há campos editáveis para nome, e-mail, escola, matrícula e ano escolar.
+- **HomeConfiguracoes.js:** Tela de configurações do perfil do usuário, permitindo que ele gerencie suas informações pessoais, segurança da conta, e acesse o suporte técnico.
 
-- **Relatar_1.js e Relatar_2.js:** Tela sequencial para a criação de relatos O usuário pode fornecer informações iniciais sobre o problema, escolher temas e detalhes e escolher se o relato deve ser divulgado ou mantido privado.
+- **InformacoesPessoais.js:** Tela onde o usuário pode visualizar e editar suas informações pessoais, como nome, e-mail, escola, matrícula e ano escolar.
 
-- **SenhaSeguranca.js:** A tela possui um sistema de validação de senha que cumpre altos padrões de segurança (mínimo de 8 caracteres, uma letra maiúscula e um caractere especial). Adicionar um modal para alterar a senha.
+- **Relatar_1.js e Relatar_2.js:** Duas telas que guiam o usuário na criação de relatos. Elas permitem que o usuário forneça detalhes iniciais, escolha temas, e decida se o relato será público ou privado.
 
-- **SuporteTecnico.js:** A tela de suporte técnico fornece instruções detalhadas para entrar em contato por e-mail. Incorporar um botão que redireciona diretamente ao aplicativo de e-mail torna o processo de suporte mais fácil.
+- **SenhaSeguranca.js:** Tela que permite ao usuário gerenciar a segurança de sua conta, incluindo uma verificação rigorosa da senha e um modal para alteração de senha.
+
+- **SuporteTecnico.js:** Tela de suporte técnico com instruções claras para contato por e-mail. Adicionei um botão que redireciona o usuário diretamente ao aplicativo de e-mail para facilitar o suporte.
 
 ### Dependências e Bibliotecas:
-- **React Native:** O principal framework usado para criar as interfaces móveis do aplicativo.
+- **React Native:** Usei este framework para desenvolver as interfaces móveis do aplicativo.
   
-- **Expo:** A ferramenta é usada para facilitar o desenvolvimento e inclui o uso de fontes personalizadas e o "LinearGradient" para transições de cores suaves.
+- **Expo:** Ferramenta que ajudou a simplificar o desenvolvimento, incluindo o uso de fontes customizadas e efeitos de gradiente com `LinearGradient`.
 
-- **React Native Vector Icons:** A biblioteca fornece ícones personalizados, que são essenciais para a navegação e a interface do usuário.
+- **React Native Vector Icons:** Biblioteca que usei para adicionar ícones customizados essenciais para a navegação e interface do usuário.
 
-- **React Native Picker:** Implementação de menus de seleção que permitem que os usuários selecionem opções nas telas de relato, como ano escolar e tema.
+- **React Native Picker:** Utilizei este componente para criar dropdowns, que permitem ao usuário selecionar opções como ano escolar e tema do relato.
 
 ### Ferramentas de Estilização:
-- **StyleSheet:** Usado para estilizar todas as telas, garantindo uma aparência coesa e uma experiência de usuário agradável e fácil de usar.
+- **StyleSheet:** Estilizei todas as telas com `StyleSheet` para garantir uma aparência consistente e uma experiência de usuário agradável e intuitiva.
 
 ### Funcionalidades Adicionais:
-- **Validação de Senhas:** Exige regras rígidas para senhas, incluindo letra maiúscula e caracteres especiais, para proteger as contas dos usuários.
+- **Validação de Senhas:** Implementei critérios rigorosos para as senhas (mínimo de 8 caracteres, incluindo letra maiúscula e caracteres especiais) para garantir a segurança das contas dos usuários.
   
-- **Navegação Intuitiva:** Para facilitar a navegação entre as várias telas do aplicativo, foram desenvolvidos botões e ícones.
+- **Navegação Intuitiva:** Adicionei botões e ícones para facilitar a navegação entre as telas.
 
-- **Modais de Confirmação:** Proporciona feedback imediato ao usuário e melhora a usabilidade do aplicativo exibindo mensagens e modais de confirmação para ações importantes.
-  
+- **Modais de Confirmação:** Incluí modais de confirmação para ações importantes, proporcionando feedback imediato ao usuário.
+
 ### Outros Arquivos:
-- **Configuração do Ambiente:** Os arquivos package.json, babel.config.js e app.json são usados para gerenciar as dependências e configurações do projeto, garantindo que o ambiente de desenvolvimento esteja preparado para suportar todas as funcionalidades do aplicativo.
+- **Configuração do Ambiente:** Gerenciei as dependências e configurações do projeto através dos arquivos `package.json`, `babel.config.js`, e `app.json`, garantindo que o ambiente de desenvolvimento esteja preparado para todas as funcionalidades do aplicativo.
