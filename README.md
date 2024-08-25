@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+**Descrição do Commit:**
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Adicionei as telas e componentes principais do aplicativo `CaEntreNos`, que foi criado para melhorar a comunicação entre alunos, responsáveis e a administração escolar.**
 
-## Get started
+---
 
-1. Install dependencies
+**Detalhes do Commit:**
 
-   ```bash
-   npm install
-   ```
+### Estrutura do Projeto:
+- Organizei o projeto de forma que tudo ficasse bem estruturado e fácil de manter:
+  - **`components/`:** Onde coloquei os componentes reutilizáveis que podem ser usados em várias partes do app.
+  - **`telas/`:** Contém todas as telas principais do aplicativo.
 
-2. Start the app
+### Componentes:
+- **Texto.js:** Criei um componente reutilizável para gerenciar a estilização dos textos, utilizando as fontes customizadas `PoppinsRegular` e `PoppinsBold` para garantir uma aparência consistente e agradável em todo o aplicativo.
 
-   ```bash
-    npx expo start
-   ```
+### Telas Implementadas:
+- **Cadastro.js:** Desenvolvi a tela de cadastro, que inclui a validação dos campos e a confirmação por modal quando o cadastro é realizado com sucesso.
 
-In the output, you'll find options to open the app in a
+- **EnvioRelato.js:** Tela que confirma o envio do relato, agradecendo ao usuário pela confiança e permitindo que ele retorne à tela inicial.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Home.js:** Esta é a tela principal do aplicativo, onde coloquei o avatar do usuário, um menu de navegação horizontal, e uma seção de perguntas frequentes (FAQ) com respostas expansíveis.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **HomeConfiguracoes.js:** Tela de configurações do perfil do usuário, permitindo que ele gerencie suas informações pessoais, segurança da conta, e acesse o suporte técnico.
 
-## Get a fresh project
+- **InformacoesPessoais.js:** Tela onde o usuário pode visualizar e editar suas informações pessoais, como nome, e-mail, escola, matrícula e ano escolar.
 
-When you're ready, run:
+- **Relatar_1.js e Relatar_2.js:** Duas telas que guiam o usuário na criação de relatos. Elas permitem que o usuário forneça detalhes iniciais, escolha temas, e decida se o relato será público ou privado.
 
-```bash
-npm run reset-project
-```
+- **SenhaSeguranca.js:** Tela que permite ao usuário gerenciar a segurança de sua conta, incluindo uma verificação rigorosa da senha e um modal para alteração de senha.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- **SuporteTecnico.js:** Tela de suporte técnico com instruções claras para contato por e-mail. Adicionei um botão que redireciona o usuário diretamente ao aplicativo de e-mail para facilitar o suporte.
 
-## Learn more
+### Dependências e Bibliotecas:
+- **React Native:** Usei este framework para desenvolver as interfaces móveis do aplicativo.
+  
+- **Expo:** Ferramenta que ajudou a simplificar o desenvolvimento, incluindo o uso de fontes customizadas e efeitos de gradiente com `LinearGradient`.
 
-To learn more about developing your project with Expo, look at the following resources:
+- **React Native Vector Icons:** Biblioteca que usei para adicionar ícones customizados essenciais para a navegação e interface do usuário.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- **React Native Picker:** Utilizei este componente para criar dropdowns, que permitem ao usuário selecionar opções como ano escolar e tema do relato.
 
-## Join the community
+### Ferramentas de Estilização:
+- **StyleSheet:** Estilizei todas as telas com `StyleSheet` para garantir uma aparência consistente e uma experiência de usuário agradável e intuitiva.
 
-Join our community of developers creating universal apps.
+### Funcionalidades Adicionais:
+- **Validação de Senhas:** Implementei critérios rigorosos para as senhas (mínimo de 8 caracteres, incluindo letra maiúscula e caracteres especiais) para garantir a segurança das contas dos usuários.
+  
+- **Navegação Intuitiva:** Adicionei botões e ícones para facilitar a navegação entre as telas.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Modais de Confirmação:** Incluí modais de confirmação para ações importantes, proporcionando feedback imediato ao usuário.
+
+### Outros Arquivos:
+- **Configuração do Ambiente:** Gerenciei as dependências e configurações do projeto através dos arquivos `package.json`, `babel.config.js`, e `app.json`, garantindo que o ambiente de desenvolvimento esteja preparado para todas as funcionalidades do aplicativo.
