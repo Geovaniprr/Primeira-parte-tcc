@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons'; 
 import Texto from '../components/Texto';
 import logoBalao from '../../assets/logoBalao.png'; 
@@ -7,9 +7,54 @@ import logoBalao from '../../assets/logoBalao.png';
 const width = Dimensions.get('screen').width;
 
 export default function Login() {
+  const [login, setLogin] = useState('');
+  const [senha, setSenha] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [emailFocado, setEmailFocado] = useState(false);
+  const [loginFocado, setLoginFocado] = useState(false);
   const [senhaFocada, setSenhaFocada] = useState(false);
+
+  const handleLogin = async () => {
+    console.log("Iniciando o login...");
+
+    if (!login || !senha) {
+      Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
+      console.log("Erro: Campos vazios");
+      return;
+    }
+
+    const dados = {
+      login: login,
+      senha: senha,
+    };
+
+    console.log("Dados para envio:", dados);
+
+    try {
+      const response = await fetch("http://localhost:8080/alunos/login", { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+
+      console.log("Resposta da API:", response);
+
+      if (response.status === 200) {
+        console.log("Login realizado com sucesso!");
+        Alert.alert("Sucesso", "Login realizado com sucesso!");
+      } else if (response.status === 401) {
+        console.log("Erro: Credenciais inválidas");
+        Alert.alert("Erro", "E-mail ou senha incorretos.");
+      } else {
+        console.log("Erro ao fazer login:", response.status);
+        Alert.alert("Erro", "Ocorreu um erro durante o login.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      Alert.alert("Erro", "Falha na conexão.");
+    }
+  };
 
   return (
     <>
@@ -24,11 +69,13 @@ export default function Login() {
         <Texto style={styles.login}>Login</Texto>
         <TextInput
           style={styles.input}
-          placeholder={emailFocado ? '' : 'E-mail'}
+          placeholder={loginFocado ? '' : 'E-mail'}
           placeholderTextColor="#555555"
           keyboardType="email-address"
-          onFocus={() => setEmailFocado(true)}
-          onBlur={() => setEmailFocado(false)}
+          onFocus={() => setLoginFocado(true)}
+          onBlur={() => setLoginFocado(false)}
+          value={login}
+          onChangeText={setLogin}
         />
         <View style={styles.containerSenha}>
           <TextInput
@@ -38,6 +85,8 @@ export default function Login() {
             secureTextEntry={secureTextEntry}
             onFocus={() => setSenhaFocada(true)}
             onBlur={() => setSenhaFocada(false)}
+            value={senha}
+            onChangeText={setSenha}
           />
           <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)}>
             <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="#AAAAAA" style={styles.icone} />
@@ -49,7 +98,7 @@ export default function Login() {
       </View>
 
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.botaoEntrar}>
+        <TouchableOpacity style={styles.botaoEntrar} onPress={handleLogin}>
           <Texto style={styles.textoBotaoEntrar}>Entrar</Texto>
         </TouchableOpacity>
         <View style={styles.containerCadastrar}>

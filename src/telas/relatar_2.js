@@ -1,14 +1,30 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, TextInput, Text, Switch } from "react-native";
+import { StyleSheet, View, TouchableOpacity, TextInput, Text, Switch, Alert } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
 
 export default function Relatar() {
-  const [selectedAno, setSelectedAno] = useState('');
-  const [selectedTema, setSelectedTema] = useState('');
   const [nome, setNome] = useState('');
+  const [selectedTema, setSelectedTema] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
+
+  const forbiddenWords = ['palavrão1', 'palavrão2', 'palavrão3']; 
+
+  const containsForbiddenWords = (text) => {
+    return forbiddenWords.some(word => text.toLowerCase().includes(word));
+  };
+
+  const handleSubmit = () => {
+    if (nome.trim() === '' || selectedTema === '' || !isAgreed) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios e aceite a Política de Privacidade.");
+    } else if (containsForbiddenWords(nome)) {
+      Alert.alert("Erro", "Seu relato contém palavras inadequadas. Por favor, remova-as.");
+    } else {
+      Alert.alert("Sucesso", "Seu relato foi enviado com sucesso!");
+    }
+  };
 
   return (
     <>
@@ -23,11 +39,8 @@ export default function Relatar() {
       </View>
 
       <View style={styles.container}>
-        <View style={styles.circulo}>
-          <Texto style={styles.circuloText}>2</Texto>
-        </View>
         <Texto style={styles.description}>
-          Chegou a hora de escrever seu relato. Para entender sua situação e ajudar da melhor forma possível, descreva toda situação de forma clara e transparente.
+          Chegou a hora de escrever seu relato. Para entender sua situação e ajudar da melhor forma possível.
         </Texto>
       </View>
 
@@ -42,6 +55,22 @@ export default function Relatar() {
           multiline={true}
           numberOfLines={4}
         />
+      </View>
+      <View style={styles.formContainer}>
+        <Texto style={styles.label}>Qual tema do relato?</Texto>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={selectedTema}
+            style={styles.picker}
+            onValueChange={setSelectedTema}
+          >
+            <Picker.Item label="Selecione o tema do relato" value="" />
+            <Picker.Item label="Problemas Acadêmicos" value="Problemas Acadêmicos" />
+            <Picker.Item label="Segurança Escolar" value="Segurança Escolar" />
+            <Picker.Item label="Sugestões e Feedbacks" value="Sugestões e Feedbacks" />
+            <Picker.Item label="Assédio e Bullying" value="Assédio e Bullying" />
+          </Picker>
+        </View>
       </View>
 
       <View style={styles.line}></View>
@@ -69,7 +98,10 @@ export default function Relatar() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSubmit}
+      >
         <Ionicons name="chevron-forward" size={24} color="white" />
       </TouchableOpacity>
 
@@ -189,7 +221,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    marginBottom: 5,
+    marginBottom: 30,
   },
   navBar: {
     flexDirection: 'row',

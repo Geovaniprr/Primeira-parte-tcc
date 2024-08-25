@@ -18,6 +18,6 @@ const estilos = StyleSheet.create({
   },
   textoNegrito: {
     fontFamily: "PoppinsBold",
-    fontWeight: "normal",
+    fontWeight: "bold",
   },
 })

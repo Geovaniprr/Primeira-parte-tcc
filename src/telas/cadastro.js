@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, Text, Modal } from "react-native";
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, Text, Modal} from "react-native";
 import { Ionicons } from '@expo/vector-icons'; 
 import Texto from '../components/Texto';
 import logoBalao from '../../assets/logoBalao.png'; 
@@ -7,12 +7,14 @@ import logoBalao from '../../assets/logoBalao.png';
 const width = Dimensions.get('screen').width;
 
 export default function Cadastro() {
-  const [nomeCompleto, setNomeCompleto] = useState('');
-  const [email, setEmail] = useState('');
+  const [nome, setNome] = useState('');
+  const [login, setLogin] = useState('');
+  const [ano, setAno] = useState('');
   const [matricula, setMatricula] = useState('');
   const [senha, setSenha] = useState('');
 
   const [nomeCompletoFocado, setNomeCompletoFocado] = useState(false);
+  const [anoFocado, setAnoFocado] = useState(false);
   const [emailFocado, setEmailFocado] = useState(false);
   const [matriculaFocado, setMatriculaFocado] = useState(false);
   const [senhaFocada, setSenhaFocada] = useState(false);
@@ -36,8 +38,8 @@ export default function Cadastro() {
     return regex.test(senha);
   };
 
-  const handleCadastro = () => {
-    if (!nomeCompleto || !email || !matricula || !senha) {
+  const handleCadastro = async () => {
+    if (!nome || !login || !matricula || !senha) {
       Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
       return;
     }
@@ -45,7 +47,33 @@ export default function Cadastro() {
       Alert.alert("Erro", "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula e um caractere especial.");
       return;
     }
-    setModalVisible(true);
+
+    const dados = {
+      nome: nome,
+      login: login,
+      ano: ano,
+      matricula: matricula,
+      senha: senha,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/alunos", { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+
+      if (response.status === 201) {
+        setModalVisible(true);
+      } else {
+        Alert.alert("Erro", "Ocorreu um erro durante o cadastro.");
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error);
+      Alert.alert("Erro", "Falha na conexão.");
+    }
   };
 
   return (
@@ -64,8 +92,8 @@ export default function Cadastro() {
           placeholderTextColor="#555555"
           onFocus={() => setNomeCompletoFocado(true)}
           onBlur={() => setNomeCompletoFocado(false)}
-          value={nomeCompleto}
-          onChangeText={setNomeCompleto}
+          value={nome}
+          onChangeText={setNome}
         />
         <TextInput
           style={styles.input}
@@ -83,8 +111,17 @@ export default function Cadastro() {
           keyboardType="email-address"
           onFocus={() => setEmailFocado(true)}
           onBlur={() => setEmailFocado(false)}
-          value={email}
-          onChangeText={setEmail}
+          value={login}
+          onChangeText={setLogin}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder={anoFocado ? '' : 'Ano Escolar'}
+          placeholderTextColor="#555555"
+          onFocus={() => setAnoFocado(true)}
+          onBlur={() => setAnoFocado(false)}
+          value={ano}
+          onChangeText={setAno}
         />
         <View style={styles.containerSenha}>
           <TextInput
@@ -169,12 +206,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold"
   },
-  facaLogin: {
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontWeight: "normal",
-    marginTop: -5,
-  },
   topoTexto: {
     marginTop: 80,
     justifyContent: 'center',
@@ -182,7 +213,6 @@ const styles = StyleSheet.create({
   },
   cadastro: {
     fontSize: 30,
-    marginBottom: 10,
     fontWeight: "bold",
     textAlign: "center",
   },
@@ -229,7 +259,7 @@ const styles = StyleSheet.create({
     color: "#000000",
   },
   container: {
-    padding: 25,
+    paddingHorizontal: 25,
   },
   validacaoContainer: {
     flexDirection: 'row',
@@ -247,7 +277,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#42D6D4",
     borderRadius: 9,
     alignItems: "center",
-    marginBottom: 5,
     width: '50%',
     alignSelf: 'center',
   },
