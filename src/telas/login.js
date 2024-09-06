@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity} from "react-native";
 import { Ionicons } from '@expo/vector-icons'; 
 import Texto from '../components/Texto';
 import logoBalao from '../../assets/logoBalao.png'; 

@@ -2,6 +2,9 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
+import HomeIcon from '../components/HomeIcon';
+import ChatIcon from '../components/ChatIcon';
+import PersonIcon from '../components/PersonIcon';
 
 export default function HomeConfiguracoes() {
   return (
@@ -47,15 +50,9 @@ export default function HomeConfiguracoes() {
         <Texto style={styles.versionText}>VERSÃO 01.0</Texto>
       </View>
       <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="person-outline" size={24} color="black" />
-        </TouchableOpacity>
+      <HomeIcon />
+      <ChatIcon />
+      <PersonIcon />
       </View>
     </>
   );

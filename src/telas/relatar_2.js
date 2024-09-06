@@ -3,6 +3,9 @@ import { StyleSheet, View, TouchableOpacity, TextInput, Text, Switch, Alert } fr
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import HomeIcon from '../components/HomeIcon';
+import ChatIcon from '../components/ChatIcon';
+import PersonIcon from '../components/PersonIcon';
 
 export default function Relatar() {
   const [nome, setNome] = useState('');
@@ -106,15 +109,9 @@ export default function Relatar() {
       </TouchableOpacity>
 
       <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="person-outline" size={24} color="black" />
-        </TouchableOpacity>
+      <HomeIcon />
+      <ChatIcon />
+      <PersonIcon />
       </View>
     </>
   );

@@ -3,6 +3,10 @@ import { StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from "react-
 import Texto from '../components/Texto';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import HomeIcon from '../components/HomeIcon';
+import ChatIcon from '../components/ChatIcon';
+import PersonIcon from '../components/PersonIcon';
+
 
 const menuItems = [
   { id: '1', title: 'Relatar', color: '#052880', icon: 'plus-box' },
@@ -99,15 +103,9 @@ export default function Home() {
         ))}
       </View>
       <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="home-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="chatbubble-outline" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Ionicons name="person-outline" size={24} color="black" />
-        </TouchableOpacity>
+      <HomeIcon />
+      <ChatIcon />
+      <PersonIcon />
       </View>
       </ScrollView>
     </>
