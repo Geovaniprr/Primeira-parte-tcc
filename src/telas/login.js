@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity} from "react-native";
-import { Ionicons } from '@expo/vector-icons'; 
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import Texto from '../components/Texto';
-import logoBalao from '../../assets/logoBalao.png'; 
+import logoBalao from '../../assets/logoBalao.png';
+import { useNavigation } from '@react-navigation/native';
 
 const width = Dimensions.get('screen').width;
 
 export default function Login() {
+  const navigation = useNavigation();
   const [login, setLogin] = useState('');
   const [senha, setSenha] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -16,8 +18,9 @@ export default function Login() {
   const handleLogin = async () => {
     console.log("Iniciando o login...");
 
+    // Validação simples de campos vazios
     if (!login || !senha) {
-      Alert.alert("Erro", "Todos os campos devem ser preenchidos.");
+      showAlert("Erro", "Todos os campos devem ser preenchidos.");
       console.log("Erro: Campos vazios");
       return;
     }
@@ -30,7 +33,7 @@ export default function Login() {
     console.log("Dados para envio:", dados);
 
     try {
-      const response = await fetch("http://localhost:8080/alunos/login", { 
+      const response = await fetch("http://localhost:8080/alunos/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,22 +41,42 @@ export default function Login() {
         body: JSON.stringify(dados),
       });
 
-      console.log("Resposta da API:", response);
+      const responseData = await response.json();
+      console.log("Resposta da API:", responseData);
 
-      if (response.status === 200) {
-        console.log("Login realizado com sucesso!");
-        Alert.alert("Sucesso", "Login realizado com sucesso!");
-      } else if (response.status === 401) {
-        console.log("Erro: Credenciais inválidas");
-        Alert.alert("Erro", "E-mail ou senha incorretos.");
-      } else {
-        console.log("Erro ao fazer login:", response.status);
-        Alert.alert("Erro", "Ocorreu um erro durante o login.");
-      }
+      handleApiResponse(response);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      Alert.alert("Erro", "Falha na conexão.");
+      showAlert("Erro", "Falha na conexão. Verifique sua internet.");
     }
+  };
+
+  // Função auxiliar para lidar com a resposta da API
+  const handleApiResponse = (response) => {
+    if (response.status === 200) {
+      console.log("Login realizado com sucesso!");
+      showAlert("Sucesso", "Login realizado com sucesso!");
+      navigation.navigate('MainTabs');
+    } else if (response.status === 401) {
+      console.log("Erro: Credenciais inválidas");
+      showAlert("Erro", "E-mail ou senha incorretos.");
+    } else {
+      console.log(`Erro ao fazer login: ${response.status}`);
+      showAlert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+    }
+  };
+
+  // Função auxiliar para exibir alertas
+  const showAlert = (titulo, mensagem) => {
+    Alert.alert(titulo, mensagem);
+  };
+
+  const handleRecovery = () => {
+    navigation.navigate('EsqueceuSenha');
+  };
+
+  const handleRegister = () => {
+    navigation.navigate('Cadastro');
   };
 
   return (
@@ -92,7 +115,7 @@ export default function Login() {
             <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="#AAAAAA" style={styles.icone} />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleRecovery()}>
           <Texto style={styles.esqueceuSenha}>Esqueceu sua senha?</Texto>
         </TouchableOpacity>
       </View>
@@ -103,7 +126,7 @@ export default function Login() {
         </TouchableOpacity>
         <View style={styles.containerCadastrar}>
           <Texto style={styles.textoCadastrar}>Não tem conta?</Texto>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => handleRegister()}>
             <Texto style={styles.linkCadastrar}>Cadastre-se</Texto>
           </TouchableOpacity>
         </View>

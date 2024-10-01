@@ -13,6 +13,9 @@ import EnvioRelato from '../src/telas/envio_relato';
 import InformacoesPessoais from '../src/telas/informacoesPessoais';
 import SenhaSeguranca from '../src/telas/senhaSeguranca';
 import SuporteTecnico from '../src/telas/suporteTecnico';
+import Login from '../src/telas/login';
+import Cadastro from '../src/telas/cadastro';
+import EsqueceuSenha from '../src/telas/esqueceuSenha';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -28,7 +31,7 @@ function MainTabs() {
             iconName = 'home-outline';
           } else if (route.name === 'Comunidade') {
             iconName = 'chatbubble-outline';
-          } else if (route.name === 'HomeConfig') {
+          } else if (route.name === 'Config') {
             iconName = 'person-outline';
           }
 
@@ -40,18 +43,26 @@ function MainTabs() {
     >
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Tab.Screen name="Comunidade" component={Comunidade} options={{ headerShown: false }} />
-      <Tab.Screen name="HomeConfig" component={HomeConfig} options={{ headerShown: false }} />
+      <Tab.Screen name="Config" component={HomeConfig} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="MainTabs">
+    <NavigationContainer independent={true}>
+      <Stack.Navigator screenOptions={
+        { headerShown: false }
+      }>
+        {/* MainTabs como a primeira rota */}
         <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        {/* Outras telas */}
         <Stack.Screen name="Relatar2" component={Relatar2} />
         <Stack.Screen name="Relatos" component={Relatos} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Comunidade" component={Comunidade} />
+        <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha} />
+        <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="EnvioRelato" component={EnvioRelato} />
         <Stack.Screen name="InformacoesPessoais" component={InformacoesPessoais} />
         <Stack.Screen name="SenhaSeguranca" component={SenhaSeguranca} />

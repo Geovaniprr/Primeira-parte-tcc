@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import Texto from '../components/Texto';
+import { useNavigation } from "@react-navigation/native";
 
 export default function EsqueceuSenha() {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [emailFocado, setEmailFocado] = useState(false);
 
+  const isValidEmail = email => {
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
   const handlePasswordReset = () => {
-    console.log('Password reset email sent to:', email);
+    if (isValidEmail(email)) {
+      Alert.alert('Sucesso', `O e-mail de redefinição de senha foi enviado para: ${email}`);
+      navigation.goBack();
+      // Aqui você pode adicionar a lógica para enviar o e-mail de redefinição
+    } else {
+      Alert.alert('Erro', 'Por favor, insira um e-mail válido.');
+    }
   };
 
   return (
@@ -32,8 +44,20 @@ export default function EsqueceuSenha() {
           onChangeText={setEmail}
           autoCapitalize="none"
         />
-        <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
-          <Texto style={styles.buttonText}>Enviar</Texto>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            !isValidEmail(email) && styles.buttonDisabled // Aplica o estilo desabilitado se o e-mail for inválido
+          ]}
+          onPress={handlePasswordReset}
+          disabled={!isValidEmail(email)} // Desabilita o botão se o e-mail for inválido
+        >
+          <Texto style={[
+            styles.buttonText,
+            !isValidEmail(email) && styles.buttonTextDisabled // Aplica o estilo de texto desabilitado
+          ]}>
+            Enviar
+          </Texto>
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -45,6 +69,7 @@ const styles = StyleSheet.create({
     paddingVertical: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
   },
   innerContainer: {
     width: '90%',
@@ -90,9 +115,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
   },
+  buttonDisabled: {
+    backgroundColor: '#A9A9A9', // Cor de fundo cinza quando desabilitado
+  },
   buttonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonTextDisabled: {
+    color: '#C0C0C0', // Texto cinza quando desabilitado
   },
 });

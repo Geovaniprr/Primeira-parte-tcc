@@ -2,17 +2,20 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
-
+import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
 
 export default function InformacoesPessoais() {
+  const navigation = useNavigation();
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
   return (
     <>
       <View style={styles.topo}>
         <Texto style={styles.topoTexto}>Informações Pessoais</Texto>
-        <TouchableOpacity style={styles.iconeContainer}>
+        <TouchableOpacity style={styles.iconeContainer} onPress={() => handleBack()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -63,11 +66,7 @@ export default function InformacoesPessoais() {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+
     </>
   );
 }
@@ -128,4 +127,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-

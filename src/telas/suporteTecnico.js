@@ -2,20 +2,23 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Linking } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
+import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
 
 export default function SuporteTecnico() {
+  const navigation = useNavigation();
   const handleEmailPress = () => {
     Linking.openURL('mailto:entreknos2023@gmail.com');
   };
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
 
   return (
     <>
       <View style={styles.topo}>
         <Texto style={styles.topoTexto}>Suporte Técnico</Texto>
-        <TouchableOpacity style={styles.iconeContainer}>
+        <TouchableOpacity style={styles.iconeContainer} onPress={() => handleBack()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -36,11 +39,7 @@ export default function SuporteTecnico() {
         <Texto style={styles.emailButtonText}>Ir ao E-mail</Texto>
       </TouchableOpacity>
       <Texto style={styles.footerText}>Atendimento 24h por dia</Texto>
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+
     </>
   );
 }

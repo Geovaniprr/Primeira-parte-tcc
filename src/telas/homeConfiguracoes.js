@@ -2,16 +2,31 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
+import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
 
 export default function HomeConfiguracoes() {
+  const navigation = useNavigation(); // Obtendo o objeto de navegação
+
+  const handleLogout = () => {
+    console.log('Deslogar');
+    // Aqui você pode adicionar lógica para deslogar o usuário (limpar tokens, etc.)
+    navigation.navigate('Login'); // Navegar para a tela de login
+  }
+
+  const handleNavigate = (screen) => {
+    navigation.navigate(screen); // Navegar para a tela informada
+  }
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
+
   return (
     <>
       <View style={styles.topo}>
         <Texto style={styles.topoTexto}>Perfil</Texto>
-        <TouchableOpacity style={styles.iconeContainer}>
+        <TouchableOpacity style={styles.iconeContainer} onPress={() => handleBack()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -27,37 +42,31 @@ export default function HomeConfiguracoes() {
       </View>
       <View style={styles.settingsSection}>
         <Texto style={styles.settingsTitle}>Configurações</Texto>
-        <TouchableOpacity style={styles.settingsItem}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => handleNavigate("InformacoesPessoais")}>
           <Ionicons name="person-outline" size={24} color="black" />
           <Texto style={styles.settingsText}>Informações pessoais</Texto>
           <Ionicons name="chevron-forward-outline" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingsItem}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => handleNavigate("SenhaSeguranca")}>
           <Ionicons name="lock-closed-outline" size={24} color="black" />
           <Texto style={styles.settingsText}>Senha e Segurança</Texto>
           <Ionicons name="chevron-forward-outline" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.settingsItem}>
+        <TouchableOpacity style={styles.settingsItem} onPress={() => handleNavigate("SuporteTecnico")}>
           <Ionicons name="headset-outline" size={24} color="black" />
           <Texto style={styles.settingsText}>Suporte Técnico</Texto>
           <Ionicons name="chevron-forward-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <View style={styles.logoutSection}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout}>
           <Texto style={styles.logoutText}>Sair da Conta</Texto>
         </TouchableOpacity>
-        <Texto style={styles.versionText}>VERSÃO 01.0</Texto>
-      </View>
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
+        <Texto style={styles.versionText}>VERSÃO 0.0.1</Texto>
       </View>
     </>
   );
 }
-
 const styles = StyleSheet.create({
   topo: {
     flexDirection: 'row',

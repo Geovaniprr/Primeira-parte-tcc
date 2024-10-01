@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, TextInput, Modal } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
-
+import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
 
 export default function SenhaSeguranca() {
+  const navigation = useNavigation();
+
+
+
   const [modalVisible, setModalVisible] = useState(false);
   const [password, setPassword] = useState('');
   const [isEightChar, setIsEightChar] = useState(false);
@@ -21,11 +22,15 @@ export default function SenhaSeguranca() {
     setHasSpecialChar(/[!@#$%^&*(),.?":{}|<>]/.test(text));
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
   return (
     <>
       <View style={styles.topo}>
         <Texto style={styles.topoTexto}>Senha e Segurança</Texto>
-        <TouchableOpacity style={styles.iconeContainer}>
+        <TouchableOpacity style={styles.iconeContainer} onPress={() => handleBack()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -44,11 +49,7 @@ export default function SenhaSeguranca() {
           <Ionicons name="create-outline" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -212,4 +213,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-

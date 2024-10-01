@@ -3,17 +3,16 @@ import { StyleSheet, View, TouchableOpacity, TextInput, Text, Switch, Alert } fr
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Relatar() {
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [selectedTema, setSelectedTema] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
-  const forbiddenWords = ['palavrão1', 'palavrão2', 'palavrão3']; 
+  const forbiddenWords = ['palavrão1', 'palavrão2', 'palavrão3'];
 
   const containsForbiddenWords = (text) => {
     return forbiddenWords.some(word => text.toLowerCase().includes(word));
@@ -29,14 +28,22 @@ export default function Relatar() {
     }
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
+  const handleClose = () => {
+    navigation.navigate('MainTabs');
+  }
+
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleBack()}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Texto style={styles.title}>Relatar</Texto>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleClose()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -108,11 +115,7 @@ export default function Relatar() {
         <Ionicons name="chevron-forward" size={24} color="white" />
       </TouchableOpacity>
 
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+
     </>
   );
 }

@@ -2,16 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import Texto from '../components/Texto';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
-
+import { useNavigation } from '@react-navigation/native';
 
 const menuItems = [
-  { id: '1', title: 'Relatar', color: '#052880', icon: 'plus-box' },
-  { id: '2', title: 'Acompanhar', color: '#2ED6CD', icon: 'check-circle' },
-  { id: '3', title: 'Comunidade', color: '#052880', icon: 'account-group' },
+  { id: '1', title: 'Relatar', color: '#052880', icon: 'plus-box', pageName: "Relatar2" },
+  { id: '2', title: 'Acompanhar', color: '#2ED6CD', icon: 'check-circle', pageName: "Relatos" },
+  { id: '3', title: 'Comunidade', color: '#052880', icon: 'account-group', pageName: "Comunidade" },
 ];
 
 const faqs = [
@@ -38,6 +34,7 @@ const faqs = [
 ];
 
 export default function Home() {
+  const navigation = useNavigation();
   const [expanded, setExpanded] = useState(null);
   const infiniteData = [...menuItems, ...menuItems, ...menuItems];
 
@@ -45,68 +42,69 @@ export default function Home() {
     setExpanded(expanded === id ? null : id);
   };
 
+  const handleMenuItemPress = (pageName) => {
+    console.log("Abrindo a página:", pageName);
+    navigation.navigate(pageName);
+  };
+
   return (
     <>
-    <ScrollView>
-      <View style={styles.avatarContainer}>
-        <View style={styles.avatar}>
-          <Texto style={styles.textoAvatar}>K</Texto>
-        </View>
-        <View style={styles.profileTextContainer}>
-          <Texto style={styles.profileName}>Ká Entre Nós</Texto>
-          <Texto style={styles.profileRole}>Aluno</Texto>
-        </View>
-      </View>
-
-      <View style={styles.apoio}>
-        <Texto style={styles.title}>Precisando de Apoio?</Texto>
-        <View style={styles.thinSeparator} />
-      </View>
-
-      <FlatList
-        data={infiniteData}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={[styles.menuItem, { backgroundColor: item.color }]}>
-            <Icon name={item.icon} size={50} color="#FFFFFF" />
-            <Texto style={styles.menuText}>{item.title}</Texto>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.menuContainer}
-        snapToAlignment="center"
-        decelerationRate="fast"
-        snapToInterval={200}
-        bounces={false}
-      />
-
-      <View style={styles.faqSection}>
-        <Texto style={styles.faqTitle}>Perguntas Frequentes</Texto>
-        <View style={styles.thinSeparator} />
-        {faqs.map((faq) => (
-          <View key={faq.id} style={styles.faqItem}>
-            <TouchableOpacity onPress={() => toggleExpand(faq.id)} style={styles.faqHeader}>
-              <Texto style={styles.faqQuestion}>{faq.question}</Texto>
-              <Icon 
-                name={expanded === faq.id ? 'minus' : 'plus'} 
-                size={24} 
-                color="#000" 
-              />
-            </TouchableOpacity>
-            {expanded === faq.id && (
-              <View style={styles.faqAnswerContainer}>
-                <Texto style={styles.faqAnswer}>{faq.answer}</Texto>
-              </View>
-            )}
+      <ScrollView>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatar}>
+            <Texto style={styles.textoAvatar}>K</Texto>
           </View>
-        ))}
-      </View>
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+          <View style={styles.profileTextContainer}>
+            <Texto style={styles.profileName}>Ká Entre Nós</Texto>
+            <Texto style={styles.profileRole}>Aluno</Texto>
+          </View>
+        </View>
+
+        <View style={styles.apoio}>
+          <Texto style={styles.title}>Precisando de Apoio?</Texto>
+          <View style={styles.thinSeparator} />
+        </View>
+
+        <FlatList
+          data={infiniteData}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={[styles.menuItem, { backgroundColor: item.color }]} onPress={() => handleMenuItemPress(item.pageName)}>
+              <Icon name={item.icon} size={50} color="#FFFFFF" />
+              <Texto style={styles.menuText}>{item.title}</Texto>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.menuContainer}
+          snapToAlignment="center"
+          decelerationRate="fast"
+          snapToInterval={200}
+          bounces={false}
+        />
+
+        <View style={styles.faqSection}>
+          <Texto style={styles.faqTitle}>Perguntas Frequentes</Texto>
+          <View style={styles.thinSeparator} />
+          {faqs.map((faq) => (
+            <View key={faq.id} style={styles.faqItem}>
+              <TouchableOpacity onPress={() => toggleExpand(faq.id)} style={styles.faqHeader}>
+                <Texto style={styles.faqQuestion}>{faq.question}</Texto>
+                <Icon
+                  name={expanded === faq.id ? 'minus' : 'plus'}
+                  size={24}
+                  color="#000"
+                />
+              </TouchableOpacity>
+              {expanded === faq.id && (
+                <View style={styles.faqAnswerContainer}>
+                  <Texto style={styles.faqAnswer}>{faq.answer}</Texto>
+                </View>
+              )}
+            </View>
+          ))}
+        </View>
+
       </ScrollView>
     </>
   );

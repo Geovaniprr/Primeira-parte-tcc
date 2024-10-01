@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, Text, Modal} from "react-native";
-import { Ionicons } from '@expo/vector-icons'; 
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, Text, Modal, ScrollView } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 import Texto from '../components/Texto';
-import logoBalao from '../../assets/logoBalao.png'; 
+import logoBalao from '../../assets/logoBalao.png';
 
 const width = Dimensions.get('screen').width;
 
@@ -57,7 +57,7 @@ export default function Cadastro() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/alunos", { 
+      const response = await fetch("http://localhost:8080/alunos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ export default function Cadastro() {
         Alert.alert("Erro", "Ocorreu um erro durante o cadastro.");
       }
     } catch (error) {
-      console.error("Erro ao cadastrar:", error);
+      console.error("Erro ao cadastrar:", JSON.stringify(error));
       Alert.alert("Erro", "Falha na conexão.");
     }
   };

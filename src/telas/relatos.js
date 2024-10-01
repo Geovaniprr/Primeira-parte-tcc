@@ -2,25 +2,33 @@ import React, { useState } from "react";
 import { StyleSheet, View, TouchableOpacity, TextInput, Modal } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import HomeIcon from '../components/HomeIcon';
-import ChatIcon from '../components/ChatIcon';
-import PersonIcon from '../components/PersonIcon';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SenhaSeguranca() {
+  const navigation = useNavigation();
+
+  const handleBack = () => {
+    navigation.goBack();
+  }
+
+  const handleClose = () => {
+    navigation.navigate('MainTabs');
+  }
+
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleBack()}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Texto style={styles.title}>Status</Texto>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleClose()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
         <Texto style={styles.description}>
-        Aqui você pode verificar o andamento dos seus relatos e as respostas fornecidas pela sua escola. 
+          Aqui você pode verificar o andamento dos seus relatos e as respostas fornecidas pela sua escola.
         </Texto>
       </View>
 
@@ -29,11 +37,7 @@ export default function SenhaSeguranca() {
         <View style={styles.line}></View>
       </View>
 
-      <View style={styles.navBar}>
-      <HomeIcon />
-      <ChatIcon />
-      <PersonIcon />
-      </View>
+
     </>
   );
 }
@@ -91,4 +95,3 @@ const styles = StyleSheet.create({
     marginBottom: '100%',
   }
 });
-
