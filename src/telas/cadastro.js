@@ -57,13 +57,13 @@ export default function Cadastro() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/alunos", {
+      const response = await fetch("http://192.168.0.16:8080/alunos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(dados),
-      });
+      });      
 
       if (response.status === 201) {
         setModalVisible(true);
@@ -78,7 +78,7 @@ export default function Cadastro() {
 
   return (
     <>
-      <View style={styles.topo}>
+      <View style={styles.topo}> 
         <View style={styles.topoTexto}>
           <Texto style={styles.realizarCadastro}>Vamos realizar{'\n'}seu cadastro</Texto>
         </View>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Texto from '../components/Texto';
 import logoBalao from '../../assets/logoBalao.png';
@@ -18,7 +18,6 @@ export default function Login() {
   const handleLogin = async () => {
     console.log("Iniciando o login...");
 
-    // Validação simples de campos vazios
     if (!login || !senha) {
       showAlert("Erro", "Todos os campos devem ser preenchidos.");
       console.log("Erro: Campos vazios");
@@ -27,13 +26,13 @@ export default function Login() {
 
     const dados = {
       login: login,
-      senha: senha,
+      senha: senha
     };
 
     console.log("Dados para envio:", dados);
 
     try {
-      const response = await fetch("http://localhost:8080/alunos/login", {
+      const response = await fetch("http://192.168.0.16:8080/alunos/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,7 +50,6 @@ export default function Login() {
     }
   };
 
-  // Função auxiliar para lidar com a resposta da API
   const handleApiResponse = (response) => {
     if (response.status === 200) {
       console.log("Login realizado com sucesso!");
@@ -66,7 +64,6 @@ export default function Login() {
     }
   };
 
-  // Função auxiliar para exibir alertas
   const showAlert = (titulo, mensagem) => {
     Alert.alert(titulo, mensagem);
   };
@@ -90,6 +87,7 @@ export default function Login() {
       </View>
       <View style={styles.container}>
         <Texto style={styles.login}>Login</Texto>
+
         <TextInput
           style={styles.input}
           placeholder={loginFocado ? '' : 'E-mail'}
@@ -100,6 +98,7 @@ export default function Login() {
           value={login}
           onChangeText={setLogin}
         />
+
         <View style={styles.containerSenha}>
           <TextInput
             style={styles.inputSenha}
@@ -115,15 +114,19 @@ export default function Login() {
             <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="#AAAAAA" style={styles.icone} />
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity onPress={() => handleRecovery()}>
           <Texto style={styles.esqueceuSenha}>Esqueceu sua senha?</Texto>
         </TouchableOpacity>
+
+        <View style={{ marginTop: 20 }}>
+          <TouchableOpacity style={styles.botaoEntrar} onPress={handleLogin}>
+            <Texto style={styles.textoBotaoEntrar}>Entrar</Texto>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.bottomContainer}>
-        <TouchableOpacity style={styles.botaoEntrar} onPress={handleLogin}>
-          <Texto style={styles.textoBotaoEntrar}>Entrar</Texto>
-        </TouchableOpacity>
         <View style={styles.containerCadastrar}>
           <Texto style={styles.textoCadastrar}>Não tem conta?</Texto>
           <TouchableOpacity onPress={() => handleRegister()}>
@@ -177,12 +180,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   input: {
-    height: 55,
+    height: 45, 
     borderColor: "#CCCCCC",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 25,
+    marginBottom: 15, 
     fontSize: 16,
     color: "#000000",
     backgroundColor: "#FFFFFF",
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
   },
   inputSenha: {
     flex: 1,
-    height: 55,
+    height: 45, 
     fontSize: 16,
     color: "#000000",
   },
@@ -226,14 +229,10 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     marginTop: 10,
   },
-  bottomContainer: {
-    alignItems: 'center',
-    marginTop: 90,
-  },
   botaoEntrar: {
     backgroundColor: "#42D6D4",
     borderRadius: 9,
-    paddingVertical: 5,
+    paddingVertical: 10, 
     paddingHorizontal: 50,
     alignItems: "center",
     marginBottom: 5,
@@ -242,6 +241,10 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 23,
     fontWeight: "bold",
+  },
+  bottomContainer: {
+    alignItems: 'center',
+    marginTop: 30,
   },
   containerCadastrar: {
     flexDirection: "row",

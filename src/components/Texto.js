@@ -8,7 +8,7 @@ export default function Texto({ children, style }) {
     estilo = estilos.textoNegrito;
   }
 
-  return <Text style={[style, estilo]}>{children}</Text>
+  return <Text style={[style, estilo]}>{children}</Text>;
 }
 
 const estilos = StyleSheet.create({
@@ -17,7 +17,7 @@ const estilos = StyleSheet.create({
     fontWeight: "normal",
   },
   textoNegrito: {
-    fontFamily: "PoppinsBold",
+    fontFamily: "PoppinsBold", 
     fontWeight: "bold",
   },
-})
+});

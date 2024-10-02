@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Relatar() {
   const navigation = useNavigation();
-  const [nome, setNome] = useState('');
-  const [selectedTema, setSelectedTema] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [tipo, setTipo] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
@@ -18,15 +18,48 @@ export default function Relatar() {
     return forbiddenWords.some(word => text.toLowerCase().includes(word));
   };
 
-  const handleSubmit = () => {
-    if (nome.trim() === '' || selectedTema === '' || !isAgreed) {
+  const handleSubmit = async () => {
+    if (descricao.trim() === '' || tipo === '' || !isAgreed) {
       Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios e aceite a Política de Privacidade.");
-    } else if (containsForbiddenWords(nome)) {
+    } else if (containsForbiddenWords(descricao)) {
       Alert.alert("Erro", "Seu relato contém palavras inadequadas. Por favor, remova-as.");
     } else {
-      Alert.alert("Sucesso", "Seu relato foi enviado com sucesso!");
+      const dados = {
+        id: 1,
+        descricao: descricao,
+        status: "pendente",
+        tipo: tipo, 
+      };
+  
+      try {
+        const response = await fetch('http://192.168.0.16:8080/relatos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dados),
+        });
+  
+        const responseData = await response.json();
+  
+        console.log('Status da resposta:', response.status);
+        console.log('Resposta da API:', responseData);
+  
+        if (response.status === 201) {
+          Alert.alert('Sucesso', 'Seu relato foi enviado com sucesso!');
+          navigation.navigate('Comunidade');
+        } else {
+          Alert.alert('Erro', 'Ocorreu um erro ao enviar o relato.');
+        }
+      } catch (error) {
+        Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
+        console.error('Erro ao enviar o relato:', error);
+      }
     }
   };
+  
+  
+
 
   const handleBack = () => {
     navigation.goBack();
@@ -60,8 +93,8 @@ export default function Relatar() {
           style={styles.input}
           placeholder="Digite aqui"
           placeholderTextColor="#A3A3A3"
-          value={nome}
-          onChangeText={setNome}
+          value={descricao}
+          onChangeText={setDescricao}
           multiline={true}
           numberOfLines={4}
         />
@@ -70,15 +103,15 @@ export default function Relatar() {
         <Texto style={styles.label}>Qual tema do relato?</Texto>
         <View style={styles.pickerContainer}>
           <Picker
-            selectedValue={selectedTema}
+            selectedValue={tipo}
             style={styles.picker}
-            onValueChange={setSelectedTema}
+            onValueChange={setTipo}
           >
             <Picker.Item label="Selecione o tema do relato" value="" />
-            <Picker.Item label="Problemas Acadêmicos" value="Problemas Acadêmicos" />
-            <Picker.Item label="Segurança Escolar" value="Segurança Escolar" />
-            <Picker.Item label="Sugestões e Feedbacks" value="Sugestões e Feedbacks" />
-            <Picker.Item label="Assédio e Bullying" value="Assédio e Bullying" />
+            <Picker.Item label="Problemas Acadêmicos" value="PROBLEMAS_ACADEMICOS" />
+            <Picker.Item label="Segurança Escolar" value="SEGURANÇA" />
+            <Picker.Item label="Sugestões e Feedbacks" value="SUGESTOES" />
+            <Picker.Item label="Assédio e Bullying" value="ABUSO" />
           </Picker>
         </View>
       </View>

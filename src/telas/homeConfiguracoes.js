@@ -21,12 +21,11 @@ export default function HomeConfiguracoes() {
     navigation.goBack();
   }
 
-
   return (
     <>
       <View style={styles.topo}>
         <Texto style={styles.topoTexto}>Perfil</Texto>
-        <TouchableOpacity style={styles.iconeContainer} onPress={() => handleBack()}>
+        <TouchableOpacity style={styles.iconeContainer} onPress={handleBack}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -67,6 +66,7 @@ export default function HomeConfiguracoes() {
     </>
   );
 }
+
 const styles = StyleSheet.create({
   topo: {
     flexDirection: 'row',
@@ -157,16 +157,5 @@ const styles = StyleSheet.create({
   versionText: {
     color: 'gray',
     fontSize: 14,
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-    paddingVertical: 10,
-  },
-  navItem: {
-    padding: 10,
   },
 });

@@ -51,9 +51,7 @@ function MainTabs() {
 export default function App() {
   return (
     <NavigationContainer independent={true}>
-      <Stack.Navigator screenOptions={
-        { headerShown: false }
-      }>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* MainTabs como a primeira rota */}
         <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
         {/* Outras telas */}
