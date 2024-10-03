@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
+import React, { useEffect, useState, useContext } from "react";
+import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../context/UserContext';
 
 export default function Comunidade() {
   const navigation = useNavigation();
   const [relatos, setRelatos] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // Função para buscar os relatos da API
   const fetchRelatos = async () => {
     try {
-      const response = await fetch('http://192.168.0.16:8080/relatos'); // Substitua pelo endpoint correto da sua API
+      const response = await fetch("http://192.168.0.16:8080/relatos", {
+        method: "GET",
+      });
       const data = await response.json();
-      setRelatos(data.content); // Certifique-se de que a estrutura da resposta esteja correta
-      setLoading(false);
+      setRelatos(data.content);
     } catch (error) {
-      console.error('Erro ao buscar relatos:', error);
-      setLoading(false);
+      console.error("Erro ao buscar os relatos:", error);
     }
   };
 
-  // Carregar os relatos ao montar o componente
   useEffect(() => {
     fetchRelatos();
   }, []);
@@ -35,22 +33,34 @@ export default function Comunidade() {
     navigation.navigate('MainTabs');
   };
 
-  const renderRelato = ({ item }) => (
-    <View style={styles.relatoCard}>
-      <Texto style={styles.tema}>{item.tipo}</Texto>
-      <Texto style={styles.descricao}>{item.descricao}</Texto>
-      <Texto style={styles.status}>{item.status}</Texto>
+  const RelatoCard = ({ relato }) => (
+    <View style={styles.card}>
+      <View style={styles.cardHeader}>
+        <Ionicons name="person-circle-outline" size={40} color="#42D6D4" />
+        <View style={styles.userInfo}>
+          <Texto style={styles.userName}>{relato.alunoNome}</Texto>
+          <Texto style={styles.userRole}>Aluno</Texto>
+        </View>
+        <Ionicons name="ellipsis-horizontal" size={24} color="gray" />
+      </View>
+      <Texto style={styles.relatoText}>{relato.descricao}</Texto>
+      <View style={styles.cardFooter}>
+        <TouchableOpacity style={styles.likeButton}>
+          <Ionicons name="heart-outline" size={20} color="red" />
+          <Texto>{relato.likes || 0}</Texto>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButton} onPress={handleBack}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleBack()}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Texto style={styles.title}>Comunidade</Texto>
-        <TouchableOpacity style={styles.iconButton} onPress={handleClose}>
+        <TouchableOpacity style={styles.iconButton} onPress={() => handleClose()}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -61,19 +71,13 @@ export default function Comunidade() {
         </Texto>
       </View>
 
-      <View style={styles.containerRelats}>
-        <View style={styles.line}></View>
-
-        {loading ? (
-          <ActivityIndicator size="large" color="#0000ff" />
-        ) : (
-          <FlatList
-            data={relatos}
-            renderItem={renderRelato}
-            keyExtractor={(item) => item.id.toString()}
-          />
-        )}
-      </View>
+      <FlatList
+        data={relatos}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => <RelatoCard relato={item} />}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+      />
     </>
   );
 }
@@ -95,12 +99,6 @@ const styles = StyleSheet.create({
   iconButton: {
     padding: 10,
   },
-  line: {
-    height: 1,
-    backgroundColor: '#CCCCCC',
-    marginHorizontal: 20,
-    marginBottom: 10,
-  },
   container: {
     alignItems: 'center',
     paddingVertical: 20,
@@ -112,35 +110,53 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     paddingHorizontal: 20,
   },
-  containerRelats: {
-    flex: 1,
+  listContent: {
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
-  relatoCard: {
-    backgroundColor: '#f9f9f9',
-    padding: 15,
-    marginBottom: 10,
+  card: {
+    backgroundColor: '#FFF',
     borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  tema: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 5,
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  descricao: {
+  userInfo: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  userName: {
     fontSize: 16,
-    marginBottom: 5,
+    fontWeight: 'bold',
   },
-  status: {
+  userRole: {
     fontSize: 14,
     color: 'gray',
+  },
+  relatoText: {
+    fontSize: 15,
+    marginTop: 10,
+    marginBottom: 15,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  likeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
