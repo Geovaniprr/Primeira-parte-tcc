@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Ionicons } from '@expo/vector-icons';
+import { UserProvider } from '../src/context/UserContext';
+import { RelatoProvider } from '../src/context/RelatoContext';
 
 import Home from '../src/telas/home';
 import HomeConfig from '../src/telas/homeConfiguracoes';
@@ -50,13 +52,15 @@ function MainTabs() {
 
 export default function App() {
   return (
+    <UserProvider>
+      <RelatoProvider>
     <NavigationContainer independent={true}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="Relatar2" component={Relatar2} />
-        <Stack.Screen name="Relatos" component={Relatos} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Comunidade" component={Comunidade} />
+        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+          <Stack.Screen name="Relatar2" component={Relatar2} />
+          <Stack.Screen name="Relatos" component={Relatos} />
+          <Stack.Screen name="Comunidade" component={Comunidade} />
         <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="EnvioRelato" component={EnvioRelato} />
@@ -65,5 +69,7 @@ export default function App() {
         <Stack.Screen name="SuporteTecnico" component={SuporteTecnico} />
       </Stack.Navigator>
     </NavigationContainer>
+    </RelatoProvider>
+    </UserProvider>
   );
 }

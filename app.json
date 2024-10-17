@@ -4,21 +4,21 @@
     "slug": "caentrenos",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/apploading.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/apploading.png",
+      "image": "../assets/apploading.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#FFF"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/apploading.png",
-        "backgroundColor": "#000000"
+        "foregroundImage": "../assets/apploading.png",
+        "backgroundColor": "#FFF"
       }
     },
     "web": {

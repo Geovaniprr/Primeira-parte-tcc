@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Alert, Image, View, Dimensions, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import React, { useContext, useState } from "react";
+import { Alert, Image, View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import Texto from '../components/Texto';
 import logoBalao from '../../assets/logoBalao.png';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../context/UserContext';
+import { saveStoreUser } from '../service/storage';
 
 const width = Dimensions.get('screen').width;
 
@@ -14,13 +16,14 @@ export default function Login() {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginFocado, setLoginFocado] = useState(false);
   const [senhaFocada, setSenhaFocada] = useState(false);
+  
+  const { setUsername, setAlunoId } = useContext(UserContext);
 
   const handleLogin = async () => {
     console.log("Iniciando o login...");
 
     if (!login || !senha) {
       showAlert("Erro", "Todos os campos devem ser preenchidos.");
-      console.log("Erro: Campos vazios");
       return;
     }
 
@@ -28,8 +31,6 @@ export default function Login() {
       login: login,
       senha: senha
     };
-
-    console.log("Dados para envio:", dados);
 
     try {
       const response = await fetch("http://192.168.0.16:8080/alunos/login", {
@@ -41,26 +42,22 @@ export default function Login() {
       });
 
       const responseData = await response.json();
-      console.log("Resposta da API:", responseData);
 
-      handleApiResponse(response);
+      if (response.status === 200) {
+        await saveStoreUser(responseData);
+        setUsername(responseData.aluno.nome);
+        setAlunoId(responseData.aluno.id);
+        showAlert("Sucesso", "Login realizado com sucesso!");
+        navigation.navigate('MainTabs');
+      } else if (response.status === 401) {
+        showAlert("Erro", "E-mail ou senha incorretos.");
+      } else {
+        showAlert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
+      }
+
     } catch (error) {
       console.error("Erro ao fazer login:", error);
       showAlert("Erro", "Falha na conexão. Verifique sua internet.");
-    }
-  };
-
-  const handleApiResponse = (response) => {
-    if (response.status === 200) {
-      console.log("Login realizado com sucesso!");
-      showAlert("Sucesso", "Login realizado com sucesso!");
-      navigation.navigate('MainTabs');
-    } else if (response.status === 401) {
-      console.log("Erro: Credenciais inválidas");
-      showAlert("Erro", "E-mail ou senha incorretos.");
-    } else {
-      console.log(`Erro ao fazer login: ${response.status}`);
-      showAlert("Erro", "Ocorreu um erro inesperado. Tente novamente.");
     }
   };
 
@@ -90,7 +87,7 @@ export default function Login() {
 
         <TextInput
           style={styles.input}
-          placeholder={loginFocado ? '' : 'E-mail'}
+          placeholder={loginFocado ? '' : 'Usuário'}
           placeholderTextColor="#555555"
           keyboardType="email-address"
           onFocus={() => setLoginFocado(true)}
@@ -111,11 +108,11 @@ export default function Login() {
             onChangeText={setSenha}
           />
           <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)}>
-            <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="#AAAAAA" style={styles.icone} />
+            <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="#AAAAAA" />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => handleRecovery()}>
+        <TouchableOpacity onPress={handleRecovery}>
           <Texto style={styles.esqueceuSenha}>Esqueceu sua senha?</Texto>
         </TouchableOpacity>
 
@@ -129,7 +126,7 @@ export default function Login() {
       <View style={styles.bottomContainer}>
         <View style={styles.containerCadastrar}>
           <Texto style={styles.textoCadastrar}>Não tem conta?</Texto>
-          <TouchableOpacity onPress={() => handleRegister()}>
+          <TouchableOpacity onPress={handleRegister}>
             <Texto style={styles.linkCadastrar}>Cadastre-se</Texto>
           </TouchableOpacity>
         </View>
@@ -190,10 +187,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
@@ -207,10 +201,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#FFFFFF",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
@@ -220,9 +211,6 @@ const styles = StyleSheet.create({
     height: 45, 
     fontSize: 16,
     color: "#000000",
-  },
-  icone: {
-    marginRight: 10,
   },
   esqueceuSenha: {
     color: "#000000",

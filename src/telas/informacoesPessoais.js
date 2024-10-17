@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
+import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../context/UserContext';
 
 export default function InformacoesPessoais() {
   const navigation = useNavigation();
-
+  const { username } = useContext(UserContext);
   const handleBack = () => {
     navigation.goBack();
   }
@@ -22,8 +23,8 @@ export default function InformacoesPessoais() {
       <View style={styles.infoContainer}>
         <View style={styles.infoItem}>
           <View style={styles.infoTextContainer}>
-            <Texto style={styles.infoTitle}>Nome completo</Texto>
-            <Texto style={styles.infoSubtitle}>Ká Entre Nós</Texto>
+            <Texto style={styles.infoTitle}>Nome</Texto>
+            <Texto style={styles.infoSubtitle}>{username ? username.split('@')[0] : ''}</Texto>
           </View>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="create-outline" size={24} color="black" />
@@ -32,7 +33,7 @@ export default function InformacoesPessoais() {
         <View style={styles.infoItem}>
           <View style={styles.infoTextContainer}>
             <Texto style={styles.infoTitle}>E-mail</Texto>
-            <Texto style={styles.infoSubtitle}>e****23@gmail.com</Texto>
+            <Texto style={styles.infoSubtitle}>{username}</Texto>
           </View>
           <TouchableOpacity style={styles.iconButton}>
             <Ionicons name="create-outline" size={24} color="black" />

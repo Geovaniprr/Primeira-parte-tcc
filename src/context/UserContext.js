@@ -1,13 +1,14 @@
-// import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 
-// export const UserContext = createContext();
+export const UserContext = createContext();
 
-// export const UserProvider = ({ children }) => {
-//   const [user, setUser] = useState(null);  // Guarda os dados do usuário
+export const UserProvider = ({ children }) => {
+  const [username, setUsername] = useState('');
+  const [alunoId, setAlunoId] = useState(null);
 
-//   return (
-//     <UserContext.Provider value={{ user, setUser }}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
+  return (
+    <UserContext.Provider value={{ username, setUsername, alunoId, setAlunoId }}>
+      {children}
+    </UserContext.Provider>
+  );
+};

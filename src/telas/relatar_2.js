@@ -1,82 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, TouchableOpacity, TextInput, Text, Switch, Alert } from "react-native";
-import Texto from '../components/Texto';
-import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
+import Texto from "../components/Texto";
+import { Ionicons } from "@expo/vector-icons";
+import { Picker } from "@react-native-picker/picker";
+import { useNavigation } from "@react-navigation/native";
+import { RelatoContext } from "../context/RelatoContext";
+import { UserContext } from "../context/UserContext";
 
 export default function Relatar() {
   const navigation = useNavigation();
   const [descricao, setDescricao] = useState('');
   const [tipo, setTipo] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
 
-  const forbiddenWords = ['palavrão1', 'palavrão2', 'palavrão3'];
-
-  const containsForbiddenWords = (text) => {
-    return forbiddenWords.some(word => text.toLowerCase().includes(word));
-  };
+  const { adicionarRelato } = useContext(RelatoContext);
+  const { username, alunoId } = useContext(UserContext)
 
   const handleSubmit = async () => {
     if (descricao.trim() === '' || tipo === '' || !isAgreed) {
       Alert.alert("Erro", "Por favor, preencha todos os campos obrigatórios e aceite a Política de Privacidade.");
-    } else if (containsForbiddenWords(descricao)) {
-      Alert.alert("Erro", "Seu relato contém palavras inadequadas. Por favor, remova-as.");
-    } else {
-      const dados = {
-        id: 1,
-        descricao: descricao,
-        status: "pendente",
-        tipo: tipo, 
-      };
-  
-      try {
-        const response = await fetch('http://192.168.0.16:8080/relatos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dados),
-        });
-  
-        const responseData = await response.json();
-  
-        console.log('Status da resposta:', response.status);
-        console.log('Resposta da API:', responseData);
-  
-        if (response.status === 201) {
-          Alert.alert('Sucesso', 'Seu relato foi enviado com sucesso!');
-          navigation.navigate('Comunidade');
-        } else {
-          Alert.alert('Erro', 'Ocorreu um erro ao enviar o relato.');
-        }
-      } catch (error) {
-        Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
-        console.error('Erro ao enviar o relato:', error);
+      return;
+    }
+
+    const dados = {
+      alunoId: user.aluno.id,
+      nomeAluno: user.aluno.nome,
+      descricao: descricao,
+      status: "pendente",
+      tipo: tipo,
+    };
+
+    try {
+      const response = await fetch('http://192.168.0.16:8080/relatos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dados),
+      });
+
+      const responseData = await response.json();
+      if (response.status === 201) {
+        adicionarRelato(responseData);
+        Alert.alert('Sucesso', 'Seu relato foi enviado com sucesso!');
+        navigation.navigate('Comunidade');
+      } else {
+        Alert.alert('Erro', 'Ocorreu um erro ao enviar o relato.');
       }
+    } catch (error) {
+      Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
+      console.error('Erro ao enviar o relato:', error);
     }
   };
-  
-  
-
 
   const handleBack = () => {
     navigation.goBack();
-  }
+  };
 
   const handleClose = () => {
     navigation.navigate('MainTabs');
-  }
+  };
 
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => handleBack()}>
+        <TouchableOpacity style={styles.iconButton} onPress={handleBack}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Texto style={styles.title}>Relatar</Texto>
-        <TouchableOpacity style={styles.iconButton} onPress={() => handleClose()}>
+        <TouchableOpacity style={styles.iconButton} onPress={handleClose}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
@@ -95,10 +85,11 @@ export default function Relatar() {
           placeholderTextColor="#A3A3A3"
           value={descricao}
           onChangeText={setDescricao}
-          multiline={true}
+          multiline
           numberOfLines={4}
         />
       </View>
+
       <View style={styles.formContainer}>
         <Texto style={styles.label}>Qual tema do relato?</Texto>
         <View style={styles.pickerContainer}>
@@ -121,19 +112,12 @@ export default function Relatar() {
       <View style={styles.publishContainer}>
         <View style={styles.publishOption}>
           <Texto style={styles.label}>Publicar relato?</Texto>
-          <Switch
-            value={isPublic}
-            onValueChange={setIsPublic}
-          />
         </View>
         <Texto style={styles.publishDescription}>
           Esta opção permite que seu relato seja visível para a comunidade escolar.
         </Texto>
         <View style={styles.checkboxContainer}>
-          <Switch
-            value={isAgreed}
-            onValueChange={setIsAgreed}
-          />
+          <Switch value={isAgreed} onValueChange={setIsAgreed} />
           <Texto style={styles.checkboxLabel}>
             Eu li e concordo com a{' '}
             <Text style={styles.link}>Política de privacidade</Text>
@@ -141,14 +125,9 @@ export default function Relatar() {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSubmit}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Ionicons name="chevron-forward" size={24} color="white" />
       </TouchableOpacity>
-
-
     </>
   );
 }
@@ -173,20 +152,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingVertical: 20,
-  },
-  circulo: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#052880',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  circuloText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
   description: {
     fontSize: 16,
@@ -255,15 +220,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     marginBottom: 30,
-  },
-  navBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: '#CCCCCC',
-  },
-  navItem: {
-    padding: 10,
   },
 });

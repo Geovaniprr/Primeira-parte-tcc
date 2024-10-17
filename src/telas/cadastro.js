@@ -68,10 +68,10 @@ export default function Cadastro() {
       if (response.status === 201) {
         setModalVisible(true);
       } else {
-        Alert.alert("Erro", "Ocorreu um erro durante o cadastro.");
+        Alert.alert("Erro de cadastro");
       }
     } catch (error) {
-      console.error("Erro ao cadastrar:", JSON.stringify(error));
+      console.error("Erro ao cadastrar:", error);
       Alert.alert("Erro", "Falha na conexão.");
     }
   };

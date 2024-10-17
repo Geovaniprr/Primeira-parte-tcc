@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
+import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../context/UserContext';
+import { clearStoreAuth, getToken } from '../service/storage';
+
 
 export default function HomeConfiguracoes() {
-  const navigation = useNavigation(); // Obtendo o objeto de navegação
-
-  const handleLogout = () => {
-    console.log('Deslogar');
-    // Aqui você pode adicionar lógica para deslogar o usuário (limpar tokens, etc.)
-    navigation.navigate('Login'); // Navegar para a tela de login
+  const navigation = useNavigation();
+  const { username } = useContext(UserContext);
+  const handleLogout = async () => {
+    await clearStoreAuth()
+    console.log('Deslogar', tokens);
+    navigation.navigate('Login');
   }
 
   const handleNavigate = (screen) => {
-    navigation.navigate(screen); // Navegar para a tela informada
+    navigation.navigate(screen);
   }
 
   const handleBack = () => {
@@ -31,10 +34,12 @@ export default function HomeConfiguracoes() {
       </View>
       <View style={styles.profileCard}>
         <View style={styles.avatarContainer}>
-          <View style={styles.avatar} />
+          <View style={styles.avatar}>
+            <Texto style={styles.textoAvatar}>{username ? username.charAt(0).toUpperCase() : ''}</Texto>
+          </View>
         </View>
         <View style={styles.profileTextContainer}>
-          <Texto style={styles.profileName}>Ká Entre Nós</Texto>
+          <Texto style={styles.profileName}>{username ? username.split('@')[0] : ''}</Texto>
           <Ionicons name="create-outline" size={16} color="black" style={styles.editIcon} />
         </View>
         <Texto style={styles.profileRole}>Aluno</Texto>
@@ -157,5 +162,19 @@ const styles = StyleSheet.create({
   versionText: {
     color: 'gray',
     fontSize: 14,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#052880',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  textoAvatar: {
+    fontSize: 20,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
   },
 });

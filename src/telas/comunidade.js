@@ -1,23 +1,29 @@
-import React, { useEffect, useState, useContext } from "react";
-import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native";
-import Texto from '../components/Texto';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { UserContext } from '../context/UserContext';
+import React, { useEffect, useContext } from "react";
+import { StyleSheet, View, TouchableOpacity, FlatList, Alert } from "react-native";
+import Texto from "../components/Texto";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { UserContext } from "../context/UserContext";
+import { RelatoContext } from "../context/RelatoContext";
 
 export default function Comunidade() {
   const navigation = useNavigation();
-  const [relatos, setRelatos] = useState([]);
+  const { alunoId } = useContext(UserContext);
+  const { relatos, setRelatos } = useContext(RelatoContext);
 
   const fetchRelatos = async () => {
     try {
-      const response = await fetch("http://192.168.0.16:8080/relatos", {
-        method: "GET",
-      });
+      const response = await fetch('http://192.168.0.16:8080/relatos');
       const data = await response.json();
-      setRelatos(data.content);
+
+      if (response.status === 200) {
+        setRelatos(data);
+      } else {
+        Alert.alert('Erro', 'Não foi possível carregar os relatos.');
+      }
     } catch (error) {
-      console.error("Erro ao buscar os relatos:", error);
+      Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
+      console.error('Erro ao buscar relatos:', error);
     }
   };
 
@@ -25,20 +31,15 @@ export default function Comunidade() {
     fetchRelatos();
   }, []);
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
-  const handleClose = () => {
-    navigation.navigate('MainTabs');
-  };
+  const handleBack = () => navigation.goBack();
+  const handleClose = () => navigation.navigate("MainTabs");
 
   const RelatoCard = ({ relato }) => (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <Ionicons name="person-circle-outline" size={40} color="#42D6D4" />
         <View style={styles.userInfo}>
-          <Texto style={styles.userName}>{relato.alunoNome}</Texto>
+          <Texto style={styles.userName}>{relato.nomeAluno || "Anônimo"}</Texto>
           <Texto style={styles.userRole}>Aluno</Texto>
         </View>
         <Ionicons name="ellipsis-horizontal" size={24} color="gray" />
@@ -47,7 +48,7 @@ export default function Comunidade() {
       <View style={styles.cardFooter}>
         <TouchableOpacity style={styles.likeButton}>
           <Ionicons name="heart-outline" size={20} color="red" />
-          <Texto>{relato.likes || 0}</Texto>
+          <Texto>{relato.curtidas || 0}</Texto>
         </TouchableOpacity>
       </View>
     </View>
@@ -56,18 +57,19 @@ export default function Comunidade() {
   return (
     <>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => handleBack()}>
+        <TouchableOpacity style={styles.iconButton} onPress={handleBack}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <Texto style={styles.title}>Comunidade</Texto>
-        <TouchableOpacity style={styles.iconButton} onPress={() => handleClose()}>
+        <TouchableOpacity style={styles.iconButton} onPress={handleClose}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
       </View>
 
       <View style={styles.container}>
         <Texto style={styles.description}>
-          Vamos apoiar outros colegas? Aqui você pode curtir relatos de outros colegas que também precisam de apoio.
+          Vamos apoiar outros colegas? Aqui você pode curtir relatos de outros
+          colegas que também precisam de apoio.
         </Texto>
       </View>
 
@@ -84,29 +86,29 @@ export default function Comunidade() {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#CCCCCC',
+    borderBottomColor: "#CCCCCC",
   },
   title: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   iconButton: {
     padding: 10,
   },
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
   },
   description: {
     fontSize: 16,
-    color: 'gray',
-    textAlign: 'center',
+    color: "gray",
+    textAlign: "center",
     lineHeight: 24,
     paddingHorizontal: 20,
   },
@@ -115,23 +117,20 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 5,
   },
   cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   userInfo: {
     flex: 1,
@@ -139,11 +138,11 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   userRole: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
   },
   relatoText: {
     fontSize: 15,
@@ -151,12 +150,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   cardFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   likeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

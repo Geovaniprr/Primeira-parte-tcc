@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import Texto from '../components/Texto';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../context/UserContext';
 
 const menuItems = [
   { id: '1', title: 'Relatar', color: '#052880', icon: 'plus-box', pageName: "Relatar2" },
@@ -37,13 +38,12 @@ export default function Home() {
   const navigation = useNavigation();
   const [expanded, setExpanded] = useState(null);
   const infiniteData = [...menuItems, ...menuItems, ...menuItems];
-
+  const { username } = useContext(UserContext);
   const toggleExpand = (id) => {
     setExpanded(expanded === id ? null : id);
   };
 
   const handleMenuItemPress = (pageName) => {
-    console.log("Abrindo a página:", pageName);
     navigation.navigate(pageName);
   };
 
@@ -52,10 +52,10 @@ export default function Home() {
       <ScrollView>
         <View style={styles.avatarContainer}>
           <View style={styles.avatar}>
-            <Texto style={styles.textoAvatar}>K</Texto>
+            <Texto style={styles.textoAvatar}>{username ? username.charAt(0).toUpperCase() : ''}</Texto>
           </View>
           <View style={styles.profileTextContainer}>
-            <Texto style={styles.profileName}>Ká Entre Nós</Texto>
+            <Texto style={styles.profileName}>{username}</Texto>
             <Texto style={styles.profileRole}>Aluno</Texto>
           </View>
         </View>

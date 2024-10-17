@@ -47,14 +47,14 @@ export default function EsqueceuSenha() {
         <TouchableOpacity
           style={[
             styles.button,
-            !isValidEmail(email) && styles.buttonDisabled // Aplica o estilo desabilitado se o e-mail for inválido
+            !isValidEmail(email) && styles.buttonDisabled
           ]}
           onPress={handlePasswordReset}
-          disabled={!isValidEmail(email)} // Desabilita o botão se o e-mail for inválido
+          disabled={!isValidEmail(email)}
         >
           <Texto style={[
             styles.buttonText,
-            !isValidEmail(email) && styles.buttonTextDisabled // Aplica o estilo de texto desabilitado
+            !isValidEmail(email) && styles.buttonTextDisabled
           ]}>
             Enviar
           </Texto>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonDisabled: {
-    backgroundColor: '#A9A9A9', // Cor de fundo cinza quando desabilitado
+    backgroundColor: '#A9A9A9',
   },
   buttonText: {
     color: 'white',
@@ -124,6 +124,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonTextDisabled: {
-    color: '#C0C0C0', // Texto cinza quando desabilitado
+    color: '#C0C0C0',
   },
 });
