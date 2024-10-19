@@ -23,8 +23,8 @@ export default function Relatar() {
     }
 
     const dados = {
-      alunoId: user.aluno.id,
-      nomeAluno: user.aluno.nome,
+      alunoId: alunoId,
+      nomeAluno: username,
       descricao: descricao,
       status: "pendente",
       tipo: tipo,

@@ -12,7 +12,7 @@ export default function HomeConfiguracoes() {
   const { username } = useContext(UserContext);
   const handleLogout = async () => {
     await clearStoreAuth()
-    console.log('Deslogar', tokens);
+    console.log('Deslogar');
     navigation.navigate('Login');
   }
 
