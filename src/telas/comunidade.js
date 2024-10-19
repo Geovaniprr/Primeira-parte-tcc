@@ -15,7 +15,7 @@ export default function Comunidade() {
 
   const fetchRelatos = async () => {
     try {
-      const response = await fetch('http://localhost:8080/relatos');
+      const response = await fetch('http://192.168.0.16:8080/relatos');
       const data = await response.json();
 
       if (response.status === 200) {
@@ -38,13 +38,14 @@ export default function Comunidade() {
   const handleClose = () => navigation.navigate("MainTabs");
 
   async function handleLikeReport(reportId) {
-    if(likeableReports?.find(report => report.idFormatado === reportId)?.liked) {
+    if(likeableReports?.find(report => report.id === reportId)?.liked) {
       Alert.alert('Erro', 'Você já curtiu este relato.');
       return;
     }
+
     const user = await getStoreUser();
     try {
-      const response = await fetch(`http://localhost:8080/relatos/curtir/${reportId}`, {
+      const response = await fetch(`http://192.168.0.16:8080/relatos/curtir/${reportId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
       });
@@ -52,8 +53,8 @@ export default function Comunidade() {
       if (response.status === 200) {
         setLikeableReports(prevState => prevState.map(report => ({
           ...report,
-          liked: report.idFormatado === reportId ? true : report.liked,
-          curtidas: report.idFormatado === reportId ? report.curtidas + 1 : report.curtidas
+          liked: report.id === reportId ? true : report.liked,
+          curtidas: report.id === reportId ? report.curtidas + 1 : report.curtidas
         })))
       } else {
         Alert.alert('Erro', 'Não foi possível curtir o relato.');
@@ -62,7 +63,6 @@ export default function Comunidade() {
       Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
     }
   }
-
 
   const RelatoCard = ({ relato }) => (
     <View style={styles.card}>
@@ -76,7 +76,7 @@ export default function Comunidade() {
       </View>
       <Texto style={styles.relatoText}>{relato.descricao}</Texto>
       <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.likeButton} onPress={() => handleLikeReport(relato.idFormatado)}>
+        <TouchableOpacity style={styles.likeButton} onPress={() => handleLikeReport(relato.id)}>
           <Ionicons name={relato.liked ? "heart" : "heart-outline"} size={20} color="red" />
           <Texto>{relato.curtidas || 0}</Texto>
         </TouchableOpacity>
