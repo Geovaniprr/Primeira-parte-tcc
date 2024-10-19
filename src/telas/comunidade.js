@@ -9,14 +9,15 @@ import { RelatoContext } from "../context/RelatoContext";
 export default function Comunidade() {
   const navigation = useNavigation();
   const { alunoId, username } = useContext(UserContext);
-  const { relatos } = useContext(RelatoContext);
+  const { relatos, setRelatos } = useContext(RelatoContext);
 
   const fetchRelatos = async () => {
     try {
-      const response = await fetch('http://192.168.0.16:8080/relatos');
+      const response = await fetch('http://localhost:8080/relatos');
       const data = await response.json();
 
       if (response.status === 200) {
+        setRelatos(data.content);
       } else {
         Alert.alert('Erro', 'Não foi possível carregar os relatos.');
       }
@@ -38,7 +39,7 @@ export default function Comunidade() {
       <View style={styles.cardHeader}>
         <Ionicons name="person-circle-outline" size={40} color="#42D6D4" />
         <View style={styles.userInfo}>
-          <Texto style={styles.userName}>{username}</Texto>
+          <Texto style={styles.userName}>{relato.alunoNome}</Texto>
           <Texto style={styles.userRole}>Aluno</Texto>
         </View>
         <Ionicons name="ellipsis-horizontal" size={24} color="gray" />
@@ -74,7 +75,7 @@ export default function Comunidade() {
 
       <FlatList
         data={relatos}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <RelatoCard relato={item} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}

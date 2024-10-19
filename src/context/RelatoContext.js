@@ -12,7 +12,7 @@ export const RelatoProvider = ({ children }) => {
   };
 
   return (
-    <RelatoContext.Provider value={{ relatos, adicionarRelato }}>
+    <RelatoContext.Provider value={{ relatos, adicionarRelato, setRelatos }}>
       {children}
     </RelatoContext.Provider>
   );
