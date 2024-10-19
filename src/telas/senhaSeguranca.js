@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, TextInput, Modal } from "react-native";
+import { StyleSheet, View, TouchableOpacity, TextInput, Modal, Alert } from "react-native";
 import Texto from '../components/Texto';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'; // Importando o hook de navegação
+import { getStoreUser } from "../service/storage";
 
 export default function SenhaSeguranca() {
   const navigation = useNavigation();
-
-
 
   const [modalVisible, setModalVisible] = useState(false);
   const [password, setPassword] = useState('');
   const [isEightChar, setIsEightChar] = useState(false);
   const [hasUpperCase, setHasUpperCase] = useState(false);
   const [hasSpecialChar, setHasSpecialChar] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const validatePassword = (text) => {
     setPassword(text);
@@ -21,6 +21,25 @@ export default function SenhaSeguranca() {
     setHasUpperCase(/[A-Z]/.test(text));
     setHasSpecialChar(/[!@#$%^&*(),.?":{}|<>]/.test(text));
   };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const user = await getStoreUser();
+    try {
+      const response = await fetch(`http://localhost:8080/alunos/redefinir-senha?novaSenha=${password}&token=${user.token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}` },
+      });
+
+      if(response.status === 200) {
+        Alert.alert('Sucesso', 'Senha alterada com sucesso.');
+      }
+    } catch {
+      Alert.alert('Erro', 'Não foi possível alterar a senha.');
+    } finally {
+      setModalVisible(false);
+    }
+  }
 
   const handleBack = () => {
     navigation.goBack();
@@ -81,7 +100,7 @@ export default function SenhaSeguranca() {
           </Texto>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: isEightChar && hasUpperCase && hasSpecialChar ? '#42D6D4' : 'gray' }]}
-            onPress={() => setModalVisible(false)}
+            onPress={handleSubmit}
             disabled={!(isEightChar && hasUpperCase && hasSpecialChar)}
           >
             <Texto style={styles.buttonText}>Concluir</Texto>
