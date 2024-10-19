@@ -47,6 +47,7 @@ export default function Login() {
         await saveStoreUser(responseData);
         setUsername(responseData.aluno.nome);
         setAlunoId(responseData.aluno.id);
+        saveStoreUser(responseData);
         showAlert("Sucesso", "Login realizado com sucesso!");
         navigation.navigate('MainTabs');
       } else if (response.status === 401) {

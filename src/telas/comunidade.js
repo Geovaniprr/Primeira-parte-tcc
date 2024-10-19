@@ -1,15 +1,17 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { StyleSheet, View, TouchableOpacity, FlatList, Alert } from "react-native";
 import Texto from "../components/Texto";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { UserContext } from "../context/UserContext";
 import { RelatoContext } from "../context/RelatoContext";
+import { getStoreUser, getToken } from "../service/storage";
 
 export default function Comunidade() {
   const navigation = useNavigation();
   const { alunoId, username } = useContext(UserContext);
   const { relatos, setRelatos } = useContext(RelatoContext);
+  const [likeableReports, setLikeableReports] = useState([]);
 
   const fetchRelatos = async () => {
     try {
@@ -18,6 +20,7 @@ export default function Comunidade() {
 
       if (response.status === 200) {
         setRelatos(data.content);
+        setLikeableReports(data.content.map(report => ({...report, liked: false})))
       } else {
         Alert.alert('Erro', 'Não foi possível carregar os relatos.');
       }
@@ -34,6 +37,33 @@ export default function Comunidade() {
   const handleBack = () => navigation.goBack();
   const handleClose = () => navigation.navigate("MainTabs");
 
+  async function handleLikeReport(reportId) {
+    if(likeableReports?.find(report => report.idFormatado === reportId)?.liked) {
+      Alert.alert('Erro', 'Você já curtiu este relato.');
+      return;
+    }
+    const user = await getStoreUser();
+    try {
+      const response = await fetch(`http://localhost:8080/relatos/curtir/${reportId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
+      });
+
+      if (response.status === 200) {
+        setLikeableReports(prevState => prevState.map(report => ({
+          ...report,
+          liked: report.idFormatado === reportId ? true : report.liked,
+          curtidas: report.idFormatado === reportId ? report.curtidas + 1 : report.curtidas
+        })))
+      } else {
+        Alert.alert('Erro', 'Não foi possível curtir o relato.');
+      }
+    } catch {
+      Alert.alert('Erro', 'Falha na conexão. Tente novamente.');
+    }
+  }
+
+
   const RelatoCard = ({ relato }) => (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -46,8 +76,8 @@ export default function Comunidade() {
       </View>
       <Texto style={styles.relatoText}>{relato.descricao}</Texto>
       <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.likeButton}>
-          <Ionicons name="heart-outline" size={20} color="red" />
+        <TouchableOpacity style={styles.likeButton} onPress={() => handleLikeReport(relato.idFormatado)}>
+          <Ionicons name={relato.liked ? "heart" : "heart-outline"} size={20} color="red" />
           <Texto>{relato.curtidas || 0}</Texto>
         </TouchableOpacity>
       </View>
@@ -74,7 +104,7 @@ export default function Comunidade() {
       </View>
 
       <FlatList
-        data={relatos}
+        data={likeableReports}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => <RelatoCard relato={item} />}
         contentContainerStyle={styles.listContent}
