@@ -26,7 +26,7 @@ export default function SenhaSeguranca() {
     setLoading(true);
     const user = await getStoreUser();
     try {
-      const response = await fetch(`http://localhost:8080/alunos/redefinir-senha?novaSenha=${password}&token=${user.token}`, {
+      const response = await fetch(`http://192.168.0.16:8080/alunos/redefinir-senha?novaSenha=${password}&token=${user.token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${user.token}` },
       });

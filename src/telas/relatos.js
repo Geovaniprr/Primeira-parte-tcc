@@ -21,7 +21,7 @@ export default function SenhaSeguranca() {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('http://localhost:8080/relatos');
+      const response = await fetch('http://192.168.0.16:8080/relatos');
       const data = await response.json();
 
       if (response.status === 200) {

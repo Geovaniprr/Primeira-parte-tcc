@@ -31,7 +31,7 @@ export default function Relatar() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/relatos', {
+      const response = await fetch('http://192.168.0.16:8080/relatos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dados),
